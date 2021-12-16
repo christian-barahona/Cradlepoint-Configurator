@@ -188,7 +188,7 @@ class CradlepointConfigurator:
     def reboot_router(self):
         self.ssh.command("reboot")
 
-    def add_to_pultt(self):
+    def add_to_database(self):
         part = cdr.Part()
         part_status = cdr.PartStatus()
         part_tag_data = cdr.PartTagData()
@@ -203,7 +203,7 @@ class CradlepointConfigurator:
         part.status_update_user_id = secrets.software_guid
         part.status_update_date = cdr.date()
 
-        utl.log_message(f"Adding part to PULTT")
+        utl.log_message(f"Adding part to database")
         result = database.insert_part(part)
         part_key = result.to_dict('records')[0]['partKey']
 
@@ -212,7 +212,7 @@ class CradlepointConfigurator:
         part_status.part_status_enum = 1
         part_status.user_id = secrets.software_guid
 
-        utl.log_message(f"Adding part status to PULTT")
+        utl.log_message(f"Adding part status to database")
         database.insert_part_status_log(part_status)
 
         for tag in ['Modem SIM ICCID', 'Modem Ethernet MAC Address', 'Modem IMEI']:
@@ -229,7 +229,7 @@ class CradlepointConfigurator:
             part_tag_data.user_id = secrets.software_guid
             part_tag_data.tag_date = cdr.date()
 
-            utl.log_message(f"Adding {tag} tag to PULTT")
+            utl.log_message(f"Adding {tag} tag to database")
             database.insert_part_tag_data(part_tag_data)
 
         return True
@@ -268,7 +268,7 @@ class CradlepointConfigurator:
         utl.log_message("[Starting configuration]")
 
         configured = \
-            self.add_to_pultt() and \
+            self.add_to_database() and \
             self.disable_show_cloud_setup() and \
             self.wwan_configuration('wwan') and \
             self.ssid_configuration('remove') and \
