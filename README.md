@@ -1,4 +1,4 @@
-# Cradlepoint-Configurator
+# Cradlepoint Configurator
 Command line app to locally configure Cradlepoint modems and insert device details into database.
 
 # NCM Modules
